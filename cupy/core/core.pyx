@@ -621,13 +621,14 @@ cdef class ndarray:
         # TODO(takagi): Support kind argument.
         _sorting._ndarray_sort(self, axis)
 
-    cpdef ndarray argsort(self, axis=-1):
+    cpdef ndarray argsort(self, axis=-1, ndarray idx_array=None):
         """Returns the indices that would sort an array with stable sorting
 
         Args:
             axis (int or None): Axis along which to sort. Default is -1, which
                 means sort along the last axis. If None is supplied, the array
                 is flattened before sorting.
+            idx_array (cupy.ndarray): Result index array.
 
         Returns:
             cupy.ndarray: Array of indices that sort the array.
@@ -638,7 +639,7 @@ cdef class ndarray:
 
         """
         # TODO(takagi): Support kind argument.
-        return _sorting._ndarray_argsort(self, axis)
+        return _sorting._ndarray_argsort(self, axis, idx_array)
 
     cpdef partition(self, kth, int axis=-1):
         """Partitions an array.
@@ -658,7 +659,7 @@ cdef class ndarray:
         """
         _sorting._ndarray_partition(self, kth, axis)
 
-    cpdef ndarray argpartition(self, kth, axis=-1):
+    cpdef ndarray argpartition(self, kth, axis=-1, ndarray idx_array=None):
         """Returns the indices that would partially sort an array.
 
         Args:
@@ -668,6 +669,7 @@ cdef class ndarray:
             axis (int or None): Axis along which to sort. Default is -1, which
                 means sort along the last axis. If None is supplied, the array
                 is flattened before sorting.
+            idx_array (cupy.ndarray): Result index array.
 
         Returns:
             cupy.ndarray: Array of the same type and shape as ``a``.
@@ -677,7 +679,7 @@ cdef class ndarray:
             :meth:`numpy.ndarray.argpartition`
 
         """
-        return _sorting._ndarray_argpartition(self, kth, axis)
+        return _sorting._ndarray_argpartition(self, kth, axis, idx_array)
 
     # TODO(okuta): Implement searchsorted
 

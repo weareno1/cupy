@@ -81,7 +81,7 @@ def lexsort(keys):
     return idx_array
 
 
-def argsort(a, axis=-1):
+def argsort(a, axis=-1, idx_array=None):
     """Returns the indices that would sort an array with a stable sorting.
 
     Args:
@@ -89,6 +89,7 @@ def argsort(a, axis=-1):
         axis (int or None): Axis along which to sort. Default is -1, which
             means sort along the last axis. If None is supplied, the array is
             flattened before sorting.
+        idx_array (cupy.ndarray): Result index array.
 
     Returns:
         cupy.ndarray: Array of indices that sort ``a``.
@@ -100,7 +101,7 @@ def argsort(a, axis=-1):
     .. seealso:: :func:`numpy.argsort`
 
     """
-    return a.argsort(axis=axis)
+    return a.argsort(axis=axis, idx_array=idx_array)
 
 
 def msort(a):
@@ -159,7 +160,7 @@ def partition(a, kth, axis=-1):
     return ret
 
 
-def argpartition(a, kth, axis=-1):
+def argpartition(a, kth, axis=-1, idx_array=None):
     """Returns the indices that would partially sort an array.
 
     Args:
@@ -170,6 +171,7 @@ def argpartition(a, kth, axis=-1):
         axis (int or None): Axis along which to sort. Default is -1, which
             means sort along the last axis. If None is supplied, the array is
             flattened before sorting.
+        idx_array (cupy.ndarray): Result index array.
 
     Returns:
         cupy.ndarray: Array of the same type and shape as ``a``.
@@ -182,4 +184,4 @@ def argpartition(a, kth, axis=-1):
     .. seealso:: :func:`numpy.argpartition`
 
     """
-    return a.argpartition(kth, axis=axis)
+    return a.argpartition(kth, axis=axis, idx_array=idx_array)

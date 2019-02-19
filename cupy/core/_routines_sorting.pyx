@@ -60,7 +60,7 @@ cdef _ndarray_sort(ndarray self, int axis):
         elementwise_copy(data, self)
 
 
-cdef ndarray _ndarray_argsort(ndarray self, axis):
+cdef ndarray _ndarray_argsort(ndarray self, axis, idx_array=None):
     cdef int _axis, ndim = self._shape.size()
     cdef ndarray data
 
@@ -91,7 +91,8 @@ cdef ndarray _ndarray_argsort(ndarray self, axis):
         data = _manipulation.rollaxis(data, _axis, ndim).copy()
     shape = data.shape
 
-    idx_array = ndarray(shape, dtype=numpy.intp)
+    if idx_array is None:
+        idx_array = ndarray(shape, dtype=numpy.intp)
 
     if ndim == 1:
         thrust.argsort(self.dtype, idx_array.data.ptr, data.data.ptr, 0,
@@ -207,7 +208,7 @@ cdef _ndarray_partition(ndarray self, kth, int axis):
         elementwise_copy(data, self)
 
 
-cdef ndarray _ndarray_argpartition(self, kth, axis):
+cdef ndarray _ndarray_argpartition(self, kth, axis, idx_array=None):
     """Returns the indices that would partially sort an array.
 
     Args:
@@ -217,6 +218,7 @@ cdef ndarray _ndarray_argpartition(self, kth, axis):
         axis (int or None): Axis along which to sort. Default is -1, which
             means sort along the last axis. If None is supplied, the array
             is flattened before sorting.
+        idx_array (cupy.ndarray): Index array.
 
     Returns:
         cupy.ndarray: Array of the same type and shape as ``a``.
@@ -256,7 +258,7 @@ cdef ndarray _ndarray_argpartition(self, kth, axis):
     # algoritm.
 
     # kth is ignored.
-    return data.argsort(_axis)
+    return data.argsort(_axis, idx_array)
 
 
 @util.memoize(for_each_device=True)
